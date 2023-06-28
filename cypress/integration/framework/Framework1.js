@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-describe("My First Test Suite", () => {
+describe("My First Framework Suite", () => {
   before(function () {
     //runs once before all tests in the block
     cy.fixture("example").then(function (data) {
@@ -30,8 +30,14 @@ describe("My First Test Suite", () => {
 
     //open the shop
     cy.get(":nth-child(2) > .nav-link").click();
-    //select product with custom made Cypress function (it is stored into support/commands.js)
-    cy.selectProduct("Blackberry");
+
+    //select product with custom made Cypress function (it is stored into support/commands.js) and with data from data file
+    this.data.productName.forEach(function (element) {
+      cy.selectProduct(element);
+    });
+
+    //Open Checkout page and assert
+    cy.get("#navbarResponsive > .navbar-nav > .nav-item > .nav-link").click();
+    cy.get(":nth-child(3) > :nth-child(4)").should("be.visible");
   });
 });
-
